@@ -68,10 +68,10 @@ namespace GameOfLife
             }
 
             this.lebendeZellen = naechsteGenerationLebendeZellen;
-            foreach(Zelle  lebendeZelle in lebendeZellen)
-            {
-                Console.WriteLine("x: " + lebendeZelle.x + ", y: " + lebendeZelle.y + ", population: " + checkPopulation(lebendeZelle));
-            }
+            //foreach(Zelle  lebendeZelle in lebendeZellen)
+            //{
+            //    Console.WriteLine("x: " + lebendeZelle.x + ", y: " + lebendeZelle.y + ", population: " + checkPopulation(lebendeZelle));
+            //}
         }
 
         public int checkPopulation(Zelle zelle)
