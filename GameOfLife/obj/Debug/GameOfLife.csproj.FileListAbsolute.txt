@@ -1,9 +1,0 @@
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\bin\Debug\GameOfLife.exe.config
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\bin\Debug\GameOfLife.exe
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\bin\Debug\GameOfLife.pdb
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.csprojAssemblyReference.cache
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.Properties.Resources.resources
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.csproj.GenerateResource.cache
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.csproj.CoreCompileInputs.cache
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.exe
-\\Mac\Home\Documents\Ausbildung\AS\GameOfLife\GameOfLife\obj\Debug\GameOfLife.pdb
