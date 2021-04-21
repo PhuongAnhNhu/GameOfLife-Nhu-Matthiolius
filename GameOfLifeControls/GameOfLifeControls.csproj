@@ -46,6 +46,7 @@
     <Compile Include="ButtonGrid.cs">
       <SubType>UserControl</SubType>
     </Compile>
+    <Compile Include="ControlHelper.cs" />
     <Compile Include="GameOfLifeControlDesigner.cs" />
     <Compile Include="GridButton.cs">
       <SubType>Component</SubType>

@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace GameOfLife
+﻿namespace GameOfLife
 {
     public class Zelle
     {
@@ -23,6 +17,15 @@ namespace GameOfLife
         {
             get { return this._y; }
             set { this._y = value; }
+        }
+        #endregion
+
+        #region Constructors
+        public Zelle() { }
+        public Zelle(int x, int y)
+        {
+            this._x = x;
+            this._y = y;
         }
         #endregion
 

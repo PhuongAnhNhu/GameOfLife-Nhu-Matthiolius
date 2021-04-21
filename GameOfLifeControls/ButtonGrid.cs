@@ -11,24 +11,11 @@ namespace GameOfLifeControls
     {
         #region Fields
         private GridButton[,] _gridButtons;
+        private int _maxGridHeight = 100, _maxGridWidth = 100, _minGridHeight = 1, _minGridWidth = 1;
         private IContainer components = null;
         #endregion
 
         #region Properties
-        [Description("The horizontal amount of buttons.")]
-        [DefaultValue(3)]
-        public int GridWidth
-        {
-            get { return this._gridButtons.GetUpperBound(0) + 1; }
-            set
-            {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException("Value has to be a positive integer that is not zero.");
-                this._gridButtons = new GridButton[value, this._gridButtons.GetUpperBound(1) + 1];
-                PopulateGridButtons();
-                InitGridButtons();
-            }
-        }
         [Description("The vertical amount of buttons.")]
         [DefaultValue(3)]
         public int GridHeight
@@ -36,11 +23,86 @@ namespace GameOfLifeControls
             get { return this._gridButtons.GetUpperBound(1) + 1; }
             set
             {
-                if (value < 1)
-                    throw new ArgumentOutOfRangeException("Value has to be a positive integer that is not zero.");
+                if (value < this._minGridHeight || value > this._maxGridHeight)
+                    return;
                 this._gridButtons = new GridButton[this._gridButtons.GetUpperBound(0) + 1, value];
                 PopulateGridButtons();
                 InitGridButtons();
+            }
+        }
+        [Description("The horizontal amount of buttons.")]
+        [DefaultValue(3)]
+        public int GridWidth
+        {
+            get { return this._gridButtons.GetUpperBound(0) + 1; }
+            set
+            {
+                if (value < this._minGridWidth || value > this._maxGridWidth)
+                    return;
+                this._gridButtons = new GridButton[value, this._gridButtons.GetUpperBound(1) + 1];
+                PopulateGridButtons();
+                InitGridButtons();
+            }
+        }
+
+        [Description("The maximum value for the GridHeight property.")]
+        [DefaultValue(100)]
+        public int MaxGridHeight
+        {
+            get { return this._maxGridHeight; }
+            set
+            {
+                if (value < this._minGridHeight)
+                    throw new ArgumentException("MaxGridHeight cannot be less than MinGridHeight.");
+                this._maxGridHeight = value;
+                if (value < this.GridHeight)
+                    this.GridHeight = value;
+            }
+        }
+        [Description("The maximum value for the GridWidth property.")]
+        [DefaultValue(100)]
+        public int MaxGridWidth
+        {
+            get { return this._maxGridWidth; }
+            set
+            {
+                if (value < this._minGridWidth)
+                    throw new ArgumentException("MaxGridWidth cannot be less than MinGridWidth.");
+                this._maxGridWidth = value;
+                if (value < this.GridWidth)
+                    this.GridWidth = value;
+            }
+        }
+        [Description("The minimum value for the GridHeight property.")]
+        [DefaultValue(1)]
+        public int MinGridHeight
+        {
+            get { return this._minGridHeight; }
+            set
+            {
+                if (value < 1)
+                    throw new ArgumentOutOfRangeException("MinGridHeight has to be a positive integer that is not zero.");
+                else if (value > this._maxGridHeight)
+                    throw new ArgumentException("MinGridHeight cannot be more than MaxGridHeight.");
+                this._minGridHeight = value;
+                if (value > this.GridHeight)
+                    this.GridHeight = value;
+            }
+        }
+        [Description("The minimum value for the GridWidth property.")]
+        [DefaultValue(1)]
+        public int MinGridWidth
+        {
+            get { return this._minGridWidth; }
+            set
+            {
+                if (value < 1)
+                    throw new ArgumentOutOfRangeException("MinGridWidth has to be a positive integer that is not zero.");
+                else if (value > this._maxGridWidth)
+                    throw new ArgumentException("MinGridWidth cannot be more than MaxGridWidth.");
+                this._minGridWidth = value;
+                if (value > this.GridWidth)
+                    this.GridWidth = value;
             }
         }
 
@@ -49,7 +111,6 @@ namespace GameOfLifeControls
         public new Size Size
         {
             get { return base.Size; }
-            set { base.Size = value; }
         }
         #endregion
         #endregion
@@ -62,6 +123,30 @@ namespace GameOfLifeControls
         #endregion
 
         #region Methods
+        public void SetButtonColor(int x, int y, Color color)
+        {
+            if (x < 1 || y < 1)
+                throw new ArgumentOutOfRangeException("The given coordinates have to positive integers that are not zero.");
+            if (x > this.GridWidth || y > this.GridHeight)
+                throw new ArgumentOutOfRangeException("There is no GridButton at X" + x + "Y" + y + ".");
+            _gridButtons[x - 1, y - 1].BackColor = color;
+        }
+        public void SetButtonColorAll(Color color)
+        {
+            foreach (GridButton btn in this._gridButtons)
+            {
+                btn.BackColor = color;
+            }
+        }
+
+        public int[] GetGridCenter()
+        {
+            int[] result = new int[2];
+            result[0] = (this.GridWidth / 2) + (this.GridWidth % 2 == 1 ? 1 : 0);
+            result[1] = (this.GridHeight / 2) + (this.GridHeight % 2 == 1 ? 1 : 0);
+            return result;
+        }
+
         protected override void Dispose(bool disposing)
         {
             if (disposing && (components != null))
@@ -118,13 +203,13 @@ namespace GameOfLifeControls
             {
                 this.Controls.Add(btn);
             }
-            this.Size = new Size((this._gridButtons.GetUpperBound(0) + 1) * 20, (this._gridButtons.GetUpperBound(1) + 1) * 20);
+            base.Size = new Size((this._gridButtons.GetUpperBound(0) + 1) * 20, (this._gridButtons.GetUpperBound(1) + 1) * 20);
             this.ResumeLayout(false);
         }
 
         private void GridButton_Click(object sender, EventArgs e)
         {
-            onButtonGridClick(this, new ButtonGridClickEventArgs((GridButton)sender));
+            onButtonGridClick?.Invoke(this, new ButtonGridClickEventArgs((GridButton)sender));
         }
         #endregion
 
