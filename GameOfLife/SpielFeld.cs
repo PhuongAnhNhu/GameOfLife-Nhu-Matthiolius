@@ -1,8 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace GameOfLife
 {
@@ -35,7 +32,7 @@ namespace GameOfLife
         }
         #endregion
 
-        #region Constructors
+        #region Constructor
         public SpielFeld(int x, int y, Zelle[] lebendeZellen)
         {
             this._startZellen = lebendeZellen;
@@ -53,11 +50,11 @@ namespace GameOfLife
             // Neugeborene
             foreach (Zelle lebendeZelle in this._lebendeZellen)
             {
-                foreach (Zelle currentZelle in lebendeZelle.GetNeighbors())
+                foreach (Zelle currentZelle in lebendeZelle.GetNeighbors(this._x,this._y))
                 {
-                    if (!Array.Exists<Zelle>(this._lebendeZellen, zelle => zelle.X == currentZelle.X && zelle.Y == currentZelle.Y) && CheckPopulation(currentZelle) == 3)
+                    if (!ZelleExistiert(this._lebendeZellen, currentZelle) && CheckPopulation(currentZelle) == 3)
                     {
-                        if (!Array.Exists<Zelle>(naechsteGenerationLebendeZellen, zelle => zelle.X == currentZelle.X && zelle.Y == currentZelle.Y))
+                        if (!ZelleExistiert(naechsteGenerationLebendeZellen, currentZelle))
                         {
                             // Console.WriteLine("x: " + currentZelle.x + ", y: " + currentZelle.y + ", population: " + checkPopulation(currentZelle));
                             naechsteGenerationLebendeZellen = naechsteGenerationLebendeZellen.Append(currentZelle).ToArray();
@@ -71,7 +68,7 @@ namespace GameOfLife
             {
                 if (CheckPopulation(lebendeZelle) >= 2 && CheckPopulation(lebendeZelle) <= 3)
                 {
-                    if (!Array.Exists<Zelle>(naechsteGenerationLebendeZellen, zelle => zelle.X == lebendeZelle.X && zelle.Y == lebendeZelle.Y))
+                    if (!ZelleExistiert(naechsteGenerationLebendeZellen, lebendeZelle))
                     {
                         // Console.WriteLine("x: " + lebendeZelle.x + ", y: " + lebendeZelle.y + ", population: " + checkPopulation(lebendeZelle));
                         naechsteGenerationLebendeZellen = naechsteGenerationLebendeZellen.Append(lebendeZelle).ToArray();
@@ -92,7 +89,7 @@ namespace GameOfLife
 
             foreach (Zelle currentZelle in this._lebendeZellen)
             {
-                if (zelle.IsNeighbor(currentZelle))
+                if (zelle.IsNeighbor(currentZelle, this._x, this._y))
                 {
                     population++;
                 }
@@ -104,6 +101,20 @@ namespace GameOfLife
         public void Reset()
         {
             this._lebendeZellen = (Zelle[])_startZellen.Clone();
+        }
+
+        public void ZelleAendern(Zelle zelle, out bool zelleLebt)
+        {
+            zelleLebt = ZelleExistiert(this._lebendeZellen, zelle);
+            if (zelleLebt)
+                this._lebendeZellen = this._lebendeZellen.Remove(zelle).ToArray();
+            else
+                this._lebendeZellen = this._lebendeZellen.Append(zelle).ToArray();
+        }
+
+        public static bool ZelleExistiert(Zelle[] suchArray, Zelle pruefZelle)
+        {
+            return Array.Exists<Zelle>(suchArray, zelle => zelle.X == pruefZelle.X && zelle.Y == pruefZelle.Y);
         }
         #endregion
     }
