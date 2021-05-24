@@ -31,28 +31,31 @@ namespace GameOfLife
         {
             this.components = new System.ComponentModel.Container();
             this.SplitContainer1 = new System.Windows.Forms.SplitContainer();
+            this.Panel1 = new System.Windows.Forms.Panel();
             this.GroupBoxAbout = new System.Windows.Forms.GroupBox();
             this.ButtonGitHub = new System.Windows.Forms.Button();
             this.GroupBoxStyle = new System.Windows.Forms.GroupBox();
             this.ButtonColorDead = new System.Windows.Forms.Button();
             this.ButtonColorLiving = new System.Windows.Forms.Button();
             this.GroupBoxSteuerung = new System.Windows.Forms.GroupBox();
+            this.ButtonPause = new System.Windows.Forms.Button();
             this.ButtonCancel = new System.Windows.Forms.Button();
             this.ButtonStart = new System.Windows.Forms.Button();
-            this.ButtonPause = new System.Windows.Forms.Button();
             this.GroupBoxSpielfeld = new System.Windows.Forms.GroupBox();
+            this.ButtonRandomize = new System.Windows.Forms.Button();
             this.ButtonSetGridSize = new System.Windows.Forms.Button();
             this.NumericUpDownGridX = new System.Windows.Forms.NumericUpDown();
             this.LabelGridY = new System.Windows.Forms.Label();
             this.NumericUpDownGridY = new System.Windows.Forms.NumericUpDown();
             this.LabelGridX = new System.Windows.Forms.Label();
+            this.ButtonGrid1 = new GameOfLifeControls.ButtonGrid();
             this.Timer1 = new System.Windows.Forms.Timer(this.components);
             this.ColorDialog1 = new System.Windows.Forms.ColorDialog();
-            this.ButtonGrid1 = new GameOfLifeControls.ButtonGrid();
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer1)).BeginInit();
             this.SplitContainer1.Panel1.SuspendLayout();
             this.SplitContainer1.Panel2.SuspendLayout();
             this.SplitContainer1.SuspendLayout();
+            this.Panel1.SuspendLayout();
             this.GroupBoxAbout.SuspendLayout();
             this.GroupBoxStyle.SuspendLayout();
             this.GroupBoxSteuerung.SuspendLayout();
@@ -64,6 +67,7 @@ namespace GameOfLife
             // SplitContainer1
             // 
             this.SplitContainer1.Dock = System.Windows.Forms.DockStyle.Fill;
+            this.SplitContainer1.FixedPanel = System.Windows.Forms.FixedPanel.Panel1;
             this.SplitContainer1.IsSplitterFixed = true;
             this.SplitContainer1.Location = new System.Drawing.Point(0, 0);
             this.SplitContainer1.Name = "SplitContainer1";
@@ -71,17 +75,29 @@ namespace GameOfLife
             // SplitContainer1.Panel1
             // 
             this.SplitContainer1.Panel1.AutoScroll = true;
-            this.SplitContainer1.Panel1.Controls.Add(this.ButtonGrid1);
+            this.SplitContainer1.Panel1.AutoScrollMinSize = new System.Drawing.Size(0, 395);
+            this.SplitContainer1.Panel1.Controls.Add(this.Panel1);
             // 
             // SplitContainer1.Panel2
             // 
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBoxAbout);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBoxStyle);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBoxSteuerung);
-            this.SplitContainer1.Panel2.Controls.Add(this.GroupBoxSpielfeld);
+            this.SplitContainer1.Panel2.Controls.Add(this.ButtonGrid1);
+            this.SplitContainer1.Panel2.Resize += new System.EventHandler(this.SplitContainer1_Panel2_Resize);
             this.SplitContainer1.Size = new System.Drawing.Size(800, 466);
-            this.SplitContainer1.SplitterDistance = 684;
+            this.SplitContainer1.SplitterDistance = 112;
             this.SplitContainer1.TabIndex = 1;
+            // 
+            // Panel1
+            // 
+            this.Panel1.Controls.Add(this.GroupBoxAbout);
+            this.Panel1.Controls.Add(this.GroupBoxStyle);
+            this.Panel1.Controls.Add(this.GroupBoxSteuerung);
+            this.Panel1.Controls.Add(this.GroupBoxSpielfeld);
+            this.Panel1.Dock = System.Windows.Forms.DockStyle.Left;
+            this.Panel1.Location = new System.Drawing.Point(0, 0);
+            this.Panel1.MinimumSize = new System.Drawing.Size(0, 395);
+            this.Panel1.Name = "Panel1";
+            this.Panel1.Size = new System.Drawing.Size(112, 466);
+            this.Panel1.TabIndex = 10;
             // 
             // GroupBoxAbout
             // 
@@ -108,7 +124,7 @@ namespace GameOfLife
             this.GroupBoxStyle.Controls.Add(this.ButtonColorDead);
             this.GroupBoxStyle.Controls.Add(this.ButtonColorLiving);
             this.GroupBoxStyle.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GroupBoxStyle.Location = new System.Drawing.Point(0, 239);
+            this.GroupBoxStyle.Location = new System.Drawing.Point(0, 268);
             this.GroupBoxStyle.Name = "GroupBoxStyle";
             this.GroupBoxStyle.Size = new System.Drawing.Size(112, 75);
             this.GroupBoxStyle.TabIndex = 8;
@@ -143,12 +159,23 @@ namespace GameOfLife
             this.GroupBoxSteuerung.Controls.Add(this.ButtonCancel);
             this.GroupBoxSteuerung.Controls.Add(this.ButtonStart);
             this.GroupBoxSteuerung.Dock = System.Windows.Forms.DockStyle.Top;
-            this.GroupBoxSteuerung.Location = new System.Drawing.Point(0, 138);
+            this.GroupBoxSteuerung.Location = new System.Drawing.Point(0, 167);
             this.GroupBoxSteuerung.Name = "GroupBoxSteuerung";
             this.GroupBoxSteuerung.Size = new System.Drawing.Size(112, 101);
             this.GroupBoxSteuerung.TabIndex = 7;
             this.GroupBoxSteuerung.TabStop = false;
             this.GroupBoxSteuerung.Text = "Steuerung";
+            // 
+            // ButtonPause
+            // 
+            this.ButtonPause.Enabled = false;
+            this.ButtonPause.Location = new System.Drawing.Point(3, 45);
+            this.ButtonPause.Name = "ButtonPause";
+            this.ButtonPause.Size = new System.Drawing.Size(106, 23);
+            this.ButtonPause.TabIndex = 1;
+            this.ButtonPause.Text = "Pause";
+            this.ButtonPause.UseVisualStyleBackColor = true;
+            this.ButtonPause.Click += new System.EventHandler(this.ButtonPause_Click);
             // 
             // ButtonCancel
             // 
@@ -171,19 +198,9 @@ namespace GameOfLife
             this.ButtonStart.UseVisualStyleBackColor = true;
             this.ButtonStart.Click += new System.EventHandler(this.ButtonStart_Click);
             // 
-            // ButtonPause
-            // 
-            this.ButtonPause.Enabled = false;
-            this.ButtonPause.Location = new System.Drawing.Point(3, 45);
-            this.ButtonPause.Name = "ButtonPause";
-            this.ButtonPause.Size = new System.Drawing.Size(106, 23);
-            this.ButtonPause.TabIndex = 1;
-            this.ButtonPause.Text = "Pause";
-            this.ButtonPause.UseVisualStyleBackColor = true;
-            this.ButtonPause.Click += new System.EventHandler(this.ButtonPause_Click);
-            // 
             // GroupBoxSpielfeld
             // 
+            this.GroupBoxSpielfeld.Controls.Add(this.ButtonRandomize);
             this.GroupBoxSpielfeld.Controls.Add(this.ButtonSetGridSize);
             this.GroupBoxSpielfeld.Controls.Add(this.NumericUpDownGridX);
             this.GroupBoxSpielfeld.Controls.Add(this.LabelGridY);
@@ -192,10 +209,20 @@ namespace GameOfLife
             this.GroupBoxSpielfeld.Dock = System.Windows.Forms.DockStyle.Top;
             this.GroupBoxSpielfeld.Location = new System.Drawing.Point(0, 0);
             this.GroupBoxSpielfeld.Name = "GroupBoxSpielfeld";
-            this.GroupBoxSpielfeld.Size = new System.Drawing.Size(112, 138);
+            this.GroupBoxSpielfeld.Size = new System.Drawing.Size(112, 167);
             this.GroupBoxSpielfeld.TabIndex = 6;
             this.GroupBoxSpielfeld.TabStop = false;
             this.GroupBoxSpielfeld.Text = "Spielfeld";
+            // 
+            // ButtonRandomize
+            // 
+            this.ButtonRandomize.Location = new System.Drawing.Point(3, 140);
+            this.ButtonRandomize.Name = "ButtonRandomize";
+            this.ButtonRandomize.Size = new System.Drawing.Size(106, 23);
+            this.ButtonRandomize.TabIndex = 6;
+            this.ButtonRandomize.Text = "Zufall";
+            this.ButtonRandomize.UseVisualStyleBackColor = true;
+            this.ButtonRandomize.Click += new System.EventHandler(this.ButtonRandomize_Click);
             // 
             // ButtonSetGridSize
             // 
@@ -210,11 +237,6 @@ namespace GameOfLife
             // NumericUpDownGridX
             // 
             this.NumericUpDownGridX.Location = new System.Drawing.Point(9, 32);
-            this.NumericUpDownGridX.Maximum = new decimal(new int[] {
-            34,
-            0,
-            0,
-            0});
             this.NumericUpDownGridX.Minimum = new decimal(new int[] {
             1,
             0,
@@ -246,11 +268,6 @@ namespace GameOfLife
             // NumericUpDownGridY
             // 
             this.NumericUpDownGridY.Location = new System.Drawing.Point(9, 71);
-            this.NumericUpDownGridY.Maximum = new decimal(new int[] {
-            23,
-            0,
-            0,
-            0});
             this.NumericUpDownGridY.Minimum = new decimal(new int[] {
             1,
             0,
@@ -279,22 +296,20 @@ namespace GameOfLife
             this.LabelGridX.TabIndex = 3;
             this.LabelGridX.Text = "Breite";
             // 
-            // Timer1
-            // 
-            this.Timer1.Interval = 1000;
-            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
-            // 
             // ButtonGrid1
             // 
             this.ButtonGrid1.BackColor = System.Drawing.Color.Silver;
             this.ButtonGrid1.GridHeight = 8;
             this.ButtonGrid1.GridWidth = 8;
             this.ButtonGrid1.Location = new System.Drawing.Point(3, 3);
-            this.ButtonGrid1.MaxGridHeight = 23;
-            this.ButtonGrid1.MaxGridWidth = 34;
             this.ButtonGrid1.Name = "ButtonGrid1";
             this.ButtonGrid1.TabIndex = 0;
             this.ButtonGrid1.ButtonGridClick += new GameOfLifeControls.ButtonGrid.ButtonGridClickEventHandler(this.ButtonGrid1_ButtonGridClick);
+            // 
+            // Timer1
+            // 
+            this.Timer1.Interval = 500;
+            this.Timer1.Tick += new System.EventHandler(this.Timer1_Tick);
             // 
             // MainForm
             // 
@@ -302,15 +317,16 @@ namespace GameOfLife
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 466);
             this.Controls.Add(this.SplitContainer1);
-            this.FormBorderStyle = System.Windows.Forms.FormBorderStyle.FixedSingle;
-            this.MaximizeBox = false;
             this.Name = "MainForm";
-            this.Text = "Main";
+            this.Text = "Game of Life";
             this.Load += new System.EventHandler(this.MainForm_Load);
+            this.ResizeBegin += new System.EventHandler(this.MainForm_ResizeBegin);
+            this.ResizeEnd += new System.EventHandler(this.MainForm_ResizeEnd);
             this.SplitContainer1.Panel1.ResumeLayout(false);
             this.SplitContainer1.Panel2.ResumeLayout(false);
             ((System.ComponentModel.ISupportInitialize)(this.SplitContainer1)).EndInit();
             this.SplitContainer1.ResumeLayout(false);
+            this.Panel1.ResumeLayout(false);
             this.GroupBoxAbout.ResumeLayout(false);
             this.GroupBoxStyle.ResumeLayout(false);
             this.GroupBoxSteuerung.ResumeLayout(false);
@@ -343,5 +359,7 @@ namespace GameOfLife
         private System.Windows.Forms.Button ButtonColorLiving;
         private System.Windows.Forms.GroupBox GroupBoxAbout;
         private System.Windows.Forms.ColorDialog ColorDialog1;
+        private System.Windows.Forms.Button ButtonRandomize;
+        private System.Windows.Forms.Panel Panel1;
     }
 }

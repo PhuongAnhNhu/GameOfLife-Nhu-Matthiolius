@@ -146,6 +146,10 @@ namespace GameOfLifeControls
             result[1] = (this.GridHeight / 2) + (this.GridHeight % 2 == 1 ? 1 : 0);
             return result;
         }
+        public int GetGridButtonCount()
+        {
+            return this._gridButtons.Length;
+        }
 
         protected override void Dispose(bool disposing)
         {

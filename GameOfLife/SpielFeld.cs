@@ -50,7 +50,7 @@ namespace GameOfLife
             // Neugeborene
             foreach (Zelle lebendeZelle in this._lebendeZellen)
             {
-                foreach (Zelle currentZelle in lebendeZelle.GetNeighbors())
+                foreach (Zelle currentZelle in lebendeZelle.GetNeighbors(this._x,this._y))
                 {
                     if (!ZelleExistiert(this._lebendeZellen, currentZelle) && CheckPopulation(currentZelle) == 3)
                     {
@@ -89,7 +89,7 @@ namespace GameOfLife
 
             foreach (Zelle currentZelle in this._lebendeZellen)
             {
-                if (zelle.IsNeighbor(currentZelle))
+                if (zelle.IsNeighbor(currentZelle, this._x, this._y))
                 {
                     population++;
                 }

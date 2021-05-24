@@ -24,7 +24,7 @@ namespace GameOfLife
         #endregion
 
         #region Methods
-        private Zelle[] MakeTorus()
+        private Zelle[] MakeDefaultShape()
         {
             int[] center = ButtonGrid1.GetGridCenter();
             Zelle[] zellen = {
@@ -35,6 +35,19 @@ namespace GameOfLife
                 new Zelle(center[0] + 1, center[1] + 1)
             };
             return zellen;
+        }
+        private void MakeRandomDistribution()
+        {
+            Random rng = new Random();
+            this._field = new SpielFeld(this._field.X, this._field.Y, new Zelle[0]);
+            int randomCellCount = rng.Next(this.ButtonGrid1.GetGridButtonCount());
+            for(int i = 0; i < randomCellCount; i++)
+            {
+                int randomX = rng.Next(1, this.ButtonGrid1.GridWidth + 1);
+                int randomY = rng.Next(1, this.ButtonGrid1.GridHeight + 1);
+                this._field.ZelleAendern(new Zelle(randomX, randomY), out _);
+            }
+            this._field = new SpielFeld(this._field.X, this._field.Y, this._field.LebendeZellen);
         }
 
         private void NextMove()
@@ -48,6 +61,16 @@ namespace GameOfLife
             {
                 this.ButtonCancel.PerformClick();
             }
+        }
+
+        private void SetMaximumGridSize()
+        {
+            int maxWidth = this.SplitContainer1.Panel2.Width / 20;
+            int maxHeight = this.SplitContainer1.Panel2.Height / 20;
+            this.ButtonGrid1.MaxGridWidth = maxWidth;
+            this.ButtonGrid1.MaxGridHeight = maxHeight;
+            this.NumericUpDownGridX.Maximum = maxWidth;
+            this.NumericUpDownGridY.Maximum = maxHeight;
         }
 
         private void RenameButtonSetGridSize()
@@ -65,10 +88,12 @@ namespace GameOfLife
             this._field.Reset();
             SetCellColors();
         }
-        private void ResetSpielfeldDefault()
+        private void ResetSpielfeldDefault(bool randomize)
         {
-            Zelle[] zellen = MakeTorus();
-            this._field = new SpielFeld(this.ButtonGrid1.GridWidth, this.ButtonGrid1.GridHeight, zellen);
+            if (!randomize)
+                this._field = new SpielFeld(this.ButtonGrid1.GridWidth, this.ButtonGrid1.GridHeight, MakeDefaultShape());
+            else
+                MakeRandomDistribution();
             SetCellColors();
         }
 
@@ -94,6 +119,7 @@ namespace GameOfLife
             this._field = new SpielFeld(this._field.X, this._field.Y, this._field.LebendeZellen);
             this.Timer1.Start();
             EnableControlsAtStartStop(true);
+            EnableSizeability(false);
         }
         private void PauseResumeGame()
         {
@@ -114,6 +140,7 @@ namespace GameOfLife
             this.Timer1.Stop();
             ResetSpielfeld();
             EnableControlsAtStartStop(false);
+            EnableSizeability(true);
             if (_isPaused)
             {
                 _isPaused = false;
@@ -126,16 +153,49 @@ namespace GameOfLife
             ControlEnabler(new Control[] { this.GroupBoxSpielfeld, this.GroupBoxStyle, this.ButtonStart, this.ButtonGrid1 }, !enableAtStart);
             ControlEnabler(new Control[] { this.ButtonPause, this.ButtonCancel }, enableAtStart);
         }
+        private void EnableSizeability(bool enabled)
+        {
+            this.MaximizeBox = enabled;
+            this.FormBorderStyle = enabled ? FormBorderStyle.Sizable : FormBorderStyle.FixedSingle;
+        }
         #endregion
         #endregion
 
         #region Form Events
         private void MainForm_Load(object sender, EventArgs e)
         {
+            SetMaximumGridSize();
             this.NumericUpDownGridX.Value = this.ButtonGrid1.GridWidth;
             this.NumericUpDownGridY.Value = this.ButtonGrid1.GridHeight;
-            ResetSpielfeldDefault();
+            ResetSpielfeldDefault(false);
         }
+
+        #region Resizing
+        private bool maximize = false;
+        private Size sizeTemp;
+        private void MainForm_ResizeBegin(object sender, EventArgs e)
+        {
+            this.maximize = false;
+            sizeTemp = new Size(this.SplitContainer1.Panel2.Width, this.SplitContainer1.Panel2.Height);
+        }
+        private void SplitContainer1_Panel2_Resize(object sender, EventArgs e)
+        {
+            if (this.maximize)
+                SetMaximumGridSize();
+        }
+        private void MainForm_ResizeEnd(object sender, EventArgs e)
+        {
+            this.maximize = true;
+            if (new Size(this.SplitContainer1.Panel2.Width, this.SplitContainer1.Panel2.Height) != sizeTemp)
+            {
+                if (this.SplitContainer1.Panel1.Height < 395)
+                    this.SplitContainer1.SplitterDistance = 129;
+                else
+                    this.SplitContainer1.SplitterDistance = 112;
+                SetMaximumGridSize();
+            }
+        }
+        #endregion
 
         private void ButtonGrid1_ButtonGridClick(object sender, ButtonGridClickEventArgs e)
         {
@@ -176,8 +236,15 @@ namespace GameOfLife
         {
             this.ButtonGrid1.GridWidth = (int)this.NumericUpDownGridX.Value;
             this.ButtonGrid1.GridHeight = (int)this.NumericUpDownGridY.Value;
-            ResetSpielfeldDefault();
+            ResetSpielfeldDefault(false);
             RenameButtonSetGridSize();
+        }
+
+        private void ButtonRandomize_Click(object sender, EventArgs e)
+        {
+            this.NumericUpDownGridX.Value = this.ButtonGrid1.GridWidth;
+            this.NumericUpDownGridY.Value = this.ButtonGrid1.GridHeight;
+            ResetSpielfeldDefault(true);
         }
 
         private void ButtonStart_Click(object sender, EventArgs e)
