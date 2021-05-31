@@ -238,7 +238,7 @@ namespace GameOfLife
             // 
             this.NumericUpDownGridX.Location = new System.Drawing.Point(9, 32);
             this.NumericUpDownGridX.Minimum = new decimal(new int[] {
-            1,
+            3,
             0,
             0,
             0});
@@ -248,7 +248,7 @@ namespace GameOfLife
             this.NumericUpDownGridX.TabIndex = 0;
             this.NumericUpDownGridX.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.NumericUpDownGridX.Value = new decimal(new int[] {
-            1,
+            3,
             0,
             0,
             0});
@@ -269,7 +269,7 @@ namespace GameOfLife
             // 
             this.NumericUpDownGridY.Location = new System.Drawing.Point(9, 71);
             this.NumericUpDownGridY.Minimum = new decimal(new int[] {
-            1,
+            3,
             0,
             0,
             0});
@@ -279,7 +279,7 @@ namespace GameOfLife
             this.NumericUpDownGridY.TabIndex = 1;
             this.NumericUpDownGridY.TextAlign = System.Windows.Forms.HorizontalAlignment.Right;
             this.NumericUpDownGridY.Value = new decimal(new int[] {
-            1,
+            3,
             0,
             0,
             0});
@@ -302,6 +302,8 @@ namespace GameOfLife
             this.ButtonGrid1.GridHeight = 8;
             this.ButtonGrid1.GridWidth = 8;
             this.ButtonGrid1.Location = new System.Drawing.Point(3, 3);
+            this.ButtonGrid1.MinGridHeight = 3;
+            this.ButtonGrid1.MinGridWidth = 3;
             this.ButtonGrid1.Name = "ButtonGrid1";
             this.ButtonGrid1.TabIndex = 0;
             this.ButtonGrid1.ButtonGridClick += new GameOfLifeControls.ButtonGrid.ButtonGridClickEventHandler(this.ButtonGrid1_ButtonGridClick);
